@@ -1,6 +1,6 @@
 # Exchange
-Market order book simulation, callable via an API.
-First-in-first-out algorithm is used for matching orders.
+Market order book simulation, callable via an API.\
+FIFO algorithm is used for matching orders.
 
 ## Usage
 Compile the project:
