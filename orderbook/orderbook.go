@@ -123,7 +123,8 @@ type OrderBook struct {
 	SellLimits    []*Limit
 	buyLimitsMap  map[float64]*Limit
 	sellLimitsMap map[float64]*Limit
-	Price         float64 // Price of the limit at which the last order was executed.
+	// Price of the limit at which the last order was executed.
+	Price float64
 }
 
 /*
@@ -170,10 +171,6 @@ func (ob *OrderBook) Reset() {
 	ob.Price = 0
 }
 
-func (ob *OrderBook) GetData() ([]*Limit, []*Limit) {
-	return ob.BuyLimits, ob.SellLimits
-}
-
 /*
 Places a limit buy or sell order at a certain Price
 and of a certain quantity. Returns the order id and
@@ -196,22 +193,13 @@ func (ob *OrderBook) PlaceLimitOrder(buyOrder bool, Price float64, qty float64) 
 	} else if !buyOrder && Price < midPrice {
 		return order.id, errors.New("can't place a sell limit order lower than midPrice")
 	}
+
 	if buyOrder {
-		// If there is no limit to place this order in.
-		// We create a new limit at the corresponding Price.
-		// We add our order to it.
-		// We add the limit to our orderbook.
-		// Finally, we sort the limits to get the highest Price 1st.
 		if ob.buyLimitsMap[Price] == nil {
 			limit := newLimit(Price)
 			limit.addOrder(order)
 			ob.addLimit(true, limit)
 		} else {
-			// If there is a limit to place it.
-			// We first append it to the corresponding map.
-			// After appending a new order we need to re sort
-			// the slice to get the oldest orders 1st (FIFO).
-			// Finally we sort the orders by timestamp in the bg.
 			ob.buyLimitsMap[Price].addOrder(order)
 		}
 	} else {

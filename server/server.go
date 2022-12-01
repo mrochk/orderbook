@@ -57,6 +57,9 @@ type LimitData struct {
 type Data struct {
 	BuyLimitsData  []LimitData `json:"buy_limits"`
 	SellLimitsData []LimitData `json:"sell_limits"`
+	Price          float64     `json:"price"`
+	Spread         float64     `json:"spread"`
+	MidPrice       float64     `json:"midprice"`
 }
 
 func newData() Data {
