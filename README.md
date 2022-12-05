@@ -55,6 +55,7 @@ POST /cancel_order
 **Body :**\
 "id" : uuid, The order id, given when the user places a limit order.\
 "price" : float, The price at which the order is sitting.
+***
 
 ```
 GET /get_data
