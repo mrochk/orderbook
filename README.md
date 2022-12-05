@@ -32,11 +32,11 @@ POST /limit_order
 ```
 
 ```
-POST /cancel_order
+POST /market_order
 ```
 
 ```
-POST /market_order
+POST /cancel_order
 ```
 
 ```
