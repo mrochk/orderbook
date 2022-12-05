@@ -3,7 +3,7 @@ Market order book simulation, callable via an API.\
 FIFO algorithm is used for matching orders.
 
 ## Usage
-**Compile the project:**
+**Compile the project:**\
 First, clone the repository, then:
 ```shell
 cd orderbook
