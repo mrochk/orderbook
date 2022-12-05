@@ -18,7 +18,7 @@ go build -o bin/exchange
 ```
 **Launch the server (runs on port 8080 by default):**
 ```shell
-./bin/exchange <PORT>
+./bin/orderbook <PORT>
 ```
 ## API Endpoints
 *The API documentation hasn't been written yet.*
