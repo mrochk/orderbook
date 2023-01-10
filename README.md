@@ -36,9 +36,9 @@ POST /limit_order
 ```
 **Body :**
 ```
-"type" : bool, The type of the order, true for a buy order.
+"type"  : bool, The type of the order, true for a buy order.
 "price" : float, The price the user wants to place the order at.
-"qty" : float, The quantity the user wants to buy or sell.
+"qty"   : float, The quantity the user wants to buy or sell.
 ```
 *Places a limit order at a certain price, if it is possible.* \
 *Returns the placed order id to the user (used to cancel the order).* 
@@ -50,7 +50,7 @@ POST /market_order
 **Body :**
 ```
 "type" : bool, The type of the order, true for a buy order.
-"qty" : float, The quantity the user wants to buy or sell.
+"qty"  : float, The quantity the user wants to buy or sell.
 ```
 *Executes a market order, if there is enough volume to.* 
 ***
@@ -59,7 +59,7 @@ POST /cancel_order
 ```
 **Body :**
 ```
-"id" : uuid, The order id, given when the user places a limit order.
+"id"    : uuid, The order id, given when the user places a limit order.
 "price" : float, The price at which the order is sitting.
 ```
 *Cancels the limit order corresponding to the order id provided by the user if it was not already executed.* 
