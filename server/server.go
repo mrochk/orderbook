@@ -9,6 +9,9 @@ import (
 	"github.com/mrochk/exchange/orderbook"
 )
 
+// This modules will be entirely rewritten
+// from scratch without the gin framework.
+
 type InitParams struct {
 	MidPrice float64 `json:"mid_price"`
 }
@@ -72,14 +75,12 @@ func newData() Data {
 func New(ob *orderbook.OrderBook) *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-
 	router.POST("/init", func(ctx *gin.Context) {
 		p, err := handleInit(ctx)
 		if err == nil {
 			ob.Init(p.MidPrice)
 		}
 	})
-
 	router.POST("/limit_order", func(ctx *gin.Context) {
 		p, err := handleLimitOrder(ctx)
 		if err == nil {
@@ -95,7 +96,6 @@ func New(ob *orderbook.OrderBook) *gin.Engine {
 			}
 		}
 	})
-
 	router.POST("/cancel_order", func(ctx *gin.Context) {
 		p, err := handleCancelOrder(ctx)
 		if err == nil {
@@ -105,7 +105,6 @@ func New(ob *orderbook.OrderBook) *gin.Engine {
 			}
 		}
 	})
-
 	router.POST("/market_order", func(ctx *gin.Context) {
 		p, err := handleMarketOrder(ctx)
 		if err == nil {
@@ -115,7 +114,6 @@ func New(ob *orderbook.OrderBook) *gin.Engine {
 			}
 		}
 	})
-
 	router.GET("/get_data", func(ctx *gin.Context) {
 		var limitData LimitData
 		d := newData()
@@ -131,6 +129,5 @@ func New(ob *orderbook.OrderBook) *gin.Engine {
 		}
 		ctx.JSON(200, d)
 	})
-
 	return router
 }

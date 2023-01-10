@@ -11,7 +11,7 @@ import (
 
 /*
 An order is defined by an unique id, a certain
-quantity the user wants to buy, and a timestamp.
+quantity that the user wants to buy, and a timestamp.
 */
 type Order struct {
 	id        uuid.UUID
@@ -178,10 +178,9 @@ an error if it was not possible to place it.
 */
 func (ob *OrderBook) PlaceLimitOrder(buyOrder bool, Price float64, qty float64) (uuid.UUID, error) {
 	var (
-		order         = newOrder(qty)
 		midPrice, err = ob.getMidPrice()
+		order         = newOrder(qty)
 	)
-
 	if err != nil {
 		return order.id, err
 	} else if Price <= 0 {
@@ -193,7 +192,6 @@ func (ob *OrderBook) PlaceLimitOrder(buyOrder bool, Price float64, qty float64) 
 	} else if !buyOrder && Price < midPrice {
 		return order.id, errors.New("can't place a sell limit order lower than midPrice")
 	}
-
 	if buyOrder {
 		if ob.buyLimitsMap[Price] == nil {
 			limit := newLimit(Price)
@@ -211,13 +209,11 @@ func (ob *OrderBook) PlaceLimitOrder(buyOrder bool, Price float64, qty float64) 
 			ob.sellLimitsMap[Price].addOrder(order)
 		}
 	}
-
 	if ob.canDeleteLimit(true) && ob.BuyLimits[0].Volume == 0 {
 		ob.deleteLimit(true, 0, ob.BuyLimits[0].Price)
 	} else if ob.canDeleteLimit(false) && ob.SellLimits[0].Volume == 0 {
 		ob.deleteLimit(false, 0, ob.SellLimits[0].Price)
 	}
-
 	return order.id, nil
 }
 
@@ -232,7 +228,7 @@ func (ob *OrderBook) CancelLimitOrder(id uuid.UUID, Price float64) error {
 	// If Price is lower than midPrice, the user wants to cancel a sell order.
 	// We need to find the limit corresponding to the Price.
 	// When we find the limit, we delete the order inside of it.
-	// If limit Volume = 0 we can delete it from order book.
+	// If the limit volume is null we can delete it from order book.
 	if Price < midPrice {
 		err = ob.buyLimitsMap[Price].deleteOrder(id)
 		if err != nil {
@@ -320,7 +316,7 @@ func (ob *OrderBook) PlaceMarketOrder(buyOrder bool, qty float64) error {
 }
 
 /*
-Add the limit to the order-book and re-sorts
+Adds the limit to the order-book and re-sorts
 the slice.
 */
 func (ob *OrderBook) addLimit(buyLimit bool, l *Limit) {
@@ -338,7 +334,7 @@ func (ob *OrderBook) addLimit(buyLimit bool, l *Limit) {
 /*
 We must not delete a limit if it's the last remaining
 in the corresponding slice, because it would break
-the getMidPrice function.
+the getMidPrice() function.
 */
 func (ob *OrderBook) canDeleteLimit(buyLimit bool) bool {
 	if buyLimit {
@@ -366,7 +362,7 @@ func (ob *OrderBook) deleteLimit(buyLimit bool, pos int, Price float64) {
 
 /*
 Returns the order-book midPrice, it needs
-to have at least one buy and sell limit to work.
+to have at least one buy and one sell limit to work.
 */
 func (ob *OrderBook) getMidPrice() (float64, error) {
 	if len(ob.BuyLimits) > 0 && len(ob.SellLimits) > 0 {
@@ -420,8 +416,6 @@ func (limits byLowestPrice) Less(i, j int) bool {
 	return limits[i].Price < limits[j].Price
 }
 
-//
-
 type byHighestPrice []*Limit
 
 func (limits byHighestPrice) Len() int {
@@ -439,7 +433,9 @@ func (limits byHighestPrice) Less(i, j int) bool {
 // Printing
 
 func (ob *OrderBook) String() string {
-	return fmt.Sprintf("\nORDER BOOK\nBUYS %+v \nSELLS %+v \nBMAP %+v \nSMAP %+v \nPrice %.2f\n", ob.BuyLimits, ob.SellLimits, ob.buyLimitsMap, ob.sellLimitsMap, ob.Price)
+	return fmt.Sprintf(`\nORDER BOOK\nBUYS %+v \nSELLS %+v \nBMAP %+v 
+		\nSMAP %+v \nPrice %.2f\n`, ob.BuyLimits, ob.SellLimits,
+		ob.buyLimitsMap, ob.sellLimitsMap, ob.Price)
 }
 
 func (o *Order) String() string {

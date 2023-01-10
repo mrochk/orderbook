@@ -16,13 +16,11 @@ func main() {
 		orderbook = orderbook.New()
 		server    = server.New(orderbook)
 	)
-
 	if len(os.Args) > 1 {
 		port = os.Args[1]
 	} else {
 		port = defaultPort
 	}
-
-	fmt.Printf("\nRunning on port %s...\n", port)
+	fmt.Printf("Ready to receive requests on port %s...\n", port)
 	server.Run(":" + port)
 }
